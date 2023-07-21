@@ -16,17 +16,26 @@ const SearchPage = () => {
 
   useEffect(() => {
     if(searchTerm) {
-      console.log(searchTerm)
+      fetchSearchMovie(searchTerm)
     }
   }, [searchTerm])
   
   const fetchSearchMovie = async (searchTerm) => {
-    const response = await axiosInstance.get(requests.fetchTrending)
+    try {
+      const response = await axiosInstance.get(requests.fetchSearchMovies + searchTerm)
+      setSearchResults(response.data.results)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <div>
-      SearchPage
+      {
+        searchResults.map((movie, index) => (
+          <h3 key={index}>{movie.name}</h3>
+        ))
+      }
     </div>
   )
 }
