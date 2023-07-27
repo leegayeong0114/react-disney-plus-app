@@ -7,12 +7,10 @@ export const useDebounce = (value, delay) => {
   useEffect(() => {
 
     const handler = setTimeout(() => {
-      console.log('In Handler')
       setDebounceValue(value)
     }, delay)
     
     return () => {
-      console.log('Destroy')
       clearTimeout(handler)
     }
   }, [value, delay])
