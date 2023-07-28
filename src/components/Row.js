@@ -28,7 +28,7 @@ const Row = ({
    * useCallback - 컴포넌트가 리렌더링 될 때 함수가 다시 생성되지 않도록 memoization 해줌
    * fetchUrl이 바뀌었을 때만 함수가 재생성되도록 함
    */
-  const fetchMovieData = useCallback( async () => {
+  const fetchMovieData = useCallback(async () => {
     const response = await axiosInstance.get(fetchUrl)
     setMovies(response.data.results)
   }, [fetchUrl])
@@ -79,7 +79,7 @@ const Row = ({
                   src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
                   alt={movie.name}
                   onClick={() => handleClick(movie)}
-                  />
+                />
                 </Wrap>
               </SwiperSlide>
             ))

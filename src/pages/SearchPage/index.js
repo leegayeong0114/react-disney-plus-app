@@ -4,10 +4,15 @@ import axiosInstance from '../../api/axios'
 import requests from '../../api/request'
 import '../SearchPage/SearchPage.css'
 import { useDebounce } from '../../hooks/useDebounce'
+import MovieModal from '../../components/MovieModal'
 
 const SearchPage = () => {
 
   const [searchResults, setSearchResults] = useState([])
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [movieSelected, setMovieSelected] = useState({})
+
   const navigate = useNavigate()
 
   const useQuery = () => {
@@ -33,28 +38,44 @@ const SearchPage = () => {
     }
   }
 
+  const handleClick = (movie) => {
+    setModalOpen(true)
+    setMovieSelected(movie)
+  }
+
   if(searchResults.length > 0) {
     return (
-      <section className="search-container">
-      {
-        searchResults.map(movie => {
-          if(movie.backdrop_path !== null && movie.media_type !== 'person') {
-            const movieImageUrl = `http://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-            return (
-              <div className="movie" key={movie.id}>
-                <div className="movie__column-poster" onClick={() => navigate(`/${movie.id}`)}>
-                  <img 
-                    src={movieImageUrl}
-                    alt="movie"
-                    className="movie__poster"
-                  />
+      <>
+        <section className="search-container">
+        {
+          searchResults.map(movie => {
+            if(movie.backdrop_path !== null && movie.media_type !== 'person') {
+              const movieImageUrl = `http://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              return (
+                <div className="movie" key={movie.id}>
+                  {/* <div className="movie__column-poster" onClick={() => navigate(`/${movie.id}`)}> */}
+                  <div className="movie__column-poster" onClick={() => handleClick(movie)}>
+                    <img 
+                      src={movieImageUrl}
+                      alt="movie"
+                      className="movie__poster"
+                    />
+                  </div>
                 </div>
-              </div>
-            )
-          }
-        })
-      }
-      </section>
+              )
+            }
+          })
+        }
+        </section>
+        
+        {
+          modalOpen && 
+          <MovieModal 
+            {...movieSelected}
+            setModalOpen={setModalOpen}
+          />
+        }
+      </>
     )
   } else {
     return (
